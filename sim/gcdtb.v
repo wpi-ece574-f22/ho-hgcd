@@ -7,14 +7,16 @@ module gcdtb();
 
    integer    nld;
    integer    nrdy;
+   integer    dt;
+
    
    hgcd dut(.a(a), 
-  	    .b(b), 
-  	    .ld(ld), 
-  	    .clk(clk), 
-  	    .reset(reset), 
-  	    .q(q), 
-  	    .rdy(rdy));
+  	   .b(b), 
+  	   .ld(ld), 
+  	   .clk(clk), 
+  	   .reset(reset), 
+  	   .q(q), 
+  	   .rdy(rdy));
    
    always
      begin
@@ -32,6 +34,7 @@ module gcdtb();
 
 	nld = 0;
 	nrdy = 0;
+	dt = 00;
 	
 	reset = 1'b1;
 	ld    = 1'b0;
@@ -59,7 +62,8 @@ module gcdtb();
 	     if (rdy)
 	       begin
 	       nrdy = nrdy + 1;
-	       $display("%t result #%d = %d", $time, nrdy, q);
+	       $display("%t (delta %t) result #%d = %d", $time, $time - dt, nrdy, q);
+	       dt = $time;
 	       end
 	     
 	     @(posedge clk);
